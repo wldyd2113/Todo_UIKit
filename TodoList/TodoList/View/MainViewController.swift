@@ -20,12 +20,16 @@ class MainViewController: UIViewController {
         appearence.backgroundColor = .black
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearence
         
+        //Add버튼
         let addButon = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(navigateToAddPage))
+        self.navigationItem.rightBarButtonItem = addButon
         
     }
     
+    //Mark: - AddViewController로 이동
     @objc func navigateToAddPage() {
-        
+        let addView = AddViewController()
+        self.navigationController?.pushViewController(addView, animated: true)
     }
 
 }
