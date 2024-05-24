@@ -21,13 +21,44 @@ class MainViewController: UIViewController, UITableViewDataSource{
         appearence.backgroundColor = .black
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearence
         
+        let titleField = UITextField()
+        titleField.borderStyle = .roundedRect
+        titleField.placeholder = "제목을 입력해주세요"
+        titleField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(titleField)
+        
         //Add버튼
         let addButon = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(navigateToAddPage))
         self.navigationItem.rightBarButtonItem = addButon
         
+        let titleAddBtn = UIButton(type: .custom)
+        titleAddBtn.setTitle("Add", for: .normal)
+        titleAddBtn.backgroundColor = .black
+        titleAddBtn.layer.cornerRadius = 10
+        titleAddBtn.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(titleAddBtn)
+        
         let tableView = UITableView(frame: view.bounds)
         tableView.dataSource = self
         view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            titleField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            titleField.widthAnchor.constraint(equalToConstant: 250),
+            titleField.heightAnchor.constraint(equalToConstant: 40),
+            
+            titleAddBtn.leadingAnchor.constraint(equalTo: titleField.trailingAnchor, constant: 20), // titleField의 오른쪽에 위치하도록 설정
+            titleAddBtn.centerYAnchor.constraint(equalTo: titleField.centerYAnchor), // titleField와 수직 중앙에 위치하도록 설정
+            titleAddBtn.widthAnchor.constraint(equalToConstant: 40),
+            titleAddBtn.heightAnchor.constraint(equalToConstant: 40),
+            
+            
+            tableView.topAnchor.constraint(equalTo: titleField.bottomAnchor, constant: 16),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
     
     //MARK: -UITableViewDataSource
@@ -38,9 +69,10 @@ class MainViewController: UIViewController, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let todoList = todos[indexPath.row]
+
         return cell
     }
-    
+//    
     // AddViewController로 이동
     @objc func navigateToAddPage() {
         let addView = AddViewController()

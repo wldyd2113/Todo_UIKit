@@ -7,8 +7,13 @@
 
 import UIKit
 
-class AddViewController: UIViewController {
+protocol AddViewControllerDelegate {
+    func saveTodo(todo: Todo)
+}
 
+class AddViewController: UIViewController {
+    var todos = [Todo]()
+    var todoTextInput: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,8 +29,14 @@ class AddViewController: UIViewController {
         addButton.setTitle("Add", for: .normal)
         addButton.backgroundColor = .black
         addButton.layer.cornerRadius = 10
+//        addButton.addAction(UIAction{ [weak self] _ in
+//            let mainView = MainViewController()
+//            
+//        }, for: UIControl.Event)
         addButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(addButton)
+        
+        
         
         
         NSLayoutConstraint.activate([
@@ -39,7 +50,12 @@ class AddViewController: UIViewController {
             addButton.heightAnchor.constraint(equalToConstant: 40)
             
         ])
-        
+                
+    }
+    func saveTodo(todo: Todo)  {
+        if todoTextInput.text!.isEmpty {
+            let textSave = Todo(todoText: todoTextInput.text!)
+        }
     }
 
 }
