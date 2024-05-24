@@ -29,15 +29,12 @@ class AddViewController: UIViewController {
         addButton.setTitle("Add", for: .normal)
         addButton.backgroundColor = .black
         addButton.layer.cornerRadius = 10
-//        addButton.addAction(UIAction{ [weak self] _ in
-//            let mainView = MainViewController()
-//            
-//        }, for: UIControl.Event)
+        addButton.addAction(UIAction{ [weak self] _ in
+            let mainView = MainViewController()
+            
+        }, for: .touchUpInside)
         addButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(addButton)
-        
-        
-        
         
         NSLayoutConstraint.activate([
             todoTextInput.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -52,9 +49,12 @@ class AddViewController: UIViewController {
         ])
                 
     }
+    
     func saveTodo(todo: Todo)  {
         if todoTextInput.text!.isEmpty {
             let textSave = Todo(todoText: todoTextInput.text!)
+            let mainView = MainViewController()
+            self.navigationController?.pushViewController(mainView, animated: true)
         }
     }
 

@@ -8,7 +8,8 @@
 import UIKit
 
 class MainViewController: UIViewController, UITableViewDataSource{
-    let todos = [Todo]()
+    var todos = [Todo]()
+    var sectionTitle:String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +37,7 @@ class MainViewController: UIViewController, UITableViewDataSource{
         titleAddBtn.backgroundColor = .black
         titleAddBtn.layer.cornerRadius = 10
         titleAddBtn.translatesAutoresizingMaskIntoConstraints = false
+        titleField.addTarget(self, action: #selector(titleFieldDidChange(_:)), for: .editingChanged)
         view.addSubview(titleAddBtn)
         
         let tableView = UITableView(frame: view.bounds)
@@ -47,6 +49,7 @@ class MainViewController: UIViewController, UITableViewDataSource{
             titleField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             titleField.widthAnchor.constraint(equalToConstant: 250),
             titleField.heightAnchor.constraint(equalToConstant: 40),
+
             
             titleAddBtn.leadingAnchor.constraint(equalTo: titleField.trailingAnchor, constant: 20), // titleField의 오른쪽에 위치하도록 설정
             titleAddBtn.centerYAnchor.constraint(equalTo: titleField.centerYAnchor), // titleField와 수직 중앙에 위치하도록 설정
@@ -72,11 +75,21 @@ class MainViewController: UIViewController, UITableViewDataSource{
 
         return cell
     }
-//    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionTitle
+    }
+
     // AddViewController로 이동
     @objc func navigateToAddPage() {
         let addView = AddViewController()
         self.navigationController?.pushViewController(addView, animated: true)
+    }
+    
+    //titleField에서 입력한값을 저장하는 함수
+    @objc func titleFieldDidChange(_ titleField: UITextField) {
+        if let text = titleField.text {
+            sectionTitle = text
+        }
     }
 
 }
