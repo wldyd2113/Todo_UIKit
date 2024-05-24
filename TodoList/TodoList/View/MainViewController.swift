@@ -7,7 +7,13 @@
 
 import UIKit
 
-class MainViewController: UIViewController, UITableViewDataSource{
+class MainViewController: UIViewController, UITableViewDataSource, AddViewControllerDelegate{
+    func saveTodo(todo: Todo)  {
+        let textSave = todo.todoText
+        print(textSave)
+    }
+    
+    
     var todos = [Todo]()
     var sectionTitle:String = ""
     
@@ -45,18 +51,16 @@ class MainViewController: UIViewController, UITableViewDataSource{
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
-            titleField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            titleField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20), // 왼쪽 여백 추가
             titleField.widthAnchor.constraint(equalToConstant: 250),
             titleField.heightAnchor.constraint(equalToConstant: 40),
 
-            
             titleAddBtn.leadingAnchor.constraint(equalTo: titleField.trailingAnchor, constant: 20), // titleField의 오른쪽에 위치하도록 설정
             titleAddBtn.centerYAnchor.constraint(equalTo: titleField.centerYAnchor), // titleField와 수직 중앙에 위치하도록 설정
             titleAddBtn.widthAnchor.constraint(equalToConstant: 40),
             titleAddBtn.heightAnchor.constraint(equalToConstant: 40),
-            
-            
+
             tableView.topAnchor.constraint(equalTo: titleField.bottomAnchor, constant: 16),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -72,7 +76,7 @@ class MainViewController: UIViewController, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let todoList = todos[indexPath.row]
-
+        cell.textLabel?.text = todoList.todoText
         return cell
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -82,6 +86,7 @@ class MainViewController: UIViewController, UITableViewDataSource{
     // AddViewController로 이동
     @objc func navigateToAddPage() {
         let addView = AddViewController()
+        addView.delegate = self
         self.navigationController?.pushViewController(addView, animated: true)
     }
     
@@ -91,5 +96,7 @@ class MainViewController: UIViewController, UITableViewDataSource{
             sectionTitle = text
         }
     }
+    
+
 
 }

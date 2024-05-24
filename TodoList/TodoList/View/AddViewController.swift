@@ -30,7 +30,6 @@ class AddViewController: UIViewController {
         
         self.todoTextInput = todoTextInput
 
-        
         let addButton = UIButton(type: .custom)
         addButton.setTitle("Add", for: .normal)
         addButton.backgroundColor = .black
@@ -59,6 +58,7 @@ class AddViewController: UIViewController {
         }
         let textSave = Todo(todoText: todoText)
         delegate?.saveTodo(todo: textSave)
+        print("Saved Todo:", textSave)
         navigationController?.popViewController(animated: true)
     }
 
