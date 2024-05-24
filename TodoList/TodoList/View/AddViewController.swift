@@ -12,8 +12,11 @@ protocol AddViewControllerDelegate {
 }
 
 class AddViewController: UIViewController {
+    
     var todos = [Todo]()
-    var todoTextInput: UITextField!
+    var todoTextInput: UITextField?
+    var delegate: AddViewControllerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,14 +28,14 @@ class AddViewController: UIViewController {
         todoTextInput.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(todoTextInput)
         
+        self.todoTextInput = todoTextInput
+
+        
         let addButton = UIButton(type: .custom)
         addButton.setTitle("Add", for: .normal)
         addButton.backgroundColor = .black
         addButton.layer.cornerRadius = 10
-        addButton.addAction(UIAction{ [weak self] _ in
-            let mainView = MainViewController()
-            
-        }, for: .touchUpInside)
+        addButton.addTarget(self, action: #selector(saveTodo), for: .touchUpInside)
         addButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(addButton)
         
@@ -50,12 +53,13 @@ class AddViewController: UIViewController {
                 
     }
     
-    func saveTodo(todo: Todo)  {
-        if todoTextInput.text!.isEmpty {
-            let textSave = Todo(todoText: todoTextInput.text!)
-            let mainView = MainViewController()
-            self.navigationController?.pushViewController(mainView, animated: true)
+    @objc func saveTodo()  {
+        guard let todoText = todoTextInput?.text, !todoText.isEmpty else {
+            return
         }
+        let textSave = Todo(todoText: todoText)
+        delegate?.saveTodo(todo: textSave)
+        navigationController?.popViewController(animated: true)
     }
 
 }
